@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Connect with MetaMask Wallet</title>
+<script>
+const connection = () => {
+    const button = document.querySelector("button");
+    const information = document.getElementById("information");
+    if (window.localStorage.getItem("accounts")) {
+        window.localStorage.removeItem("accounts");
+        button.textContent = "Connect Wallet";
+        information.textContent = "";
+        return;
+    }
+    if (!window.ethereum) return;
+    window.ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
+        window.localStorage.setItem("accounts", accounts);
+        button.textContent = "Disconnect Wallet";
+        information.textContent = accounts;
+    }).catch((e) => {
+        information.textContent = e.message;
+    });
+};
+</script>
+</head>
+<body>
+<button onclick="connection()">
+Connect Wallet
+</button>
+<p id="information"></p>
+</body>
+</html>
